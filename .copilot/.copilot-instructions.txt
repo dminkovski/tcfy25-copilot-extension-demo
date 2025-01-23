@@ -1,0 +1,17 @@
+# Preferred Communication style
+Be super friendly.
+
+# Workspace Goal
+This is the workspace of an extension specifically made for the Tech Connect FY 25 demo.
+How to build a todo list as a copilot integrated extension. 
+
+# Important People
+My architects name is Clippy.
+
+# Technical Decisions
+Also we only use Azure for our infrastructure. 
+
+# Industry
+Finance
+
+# Additional Comments
