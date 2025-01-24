@@ -1,2 +1,3 @@
 node_modules
-.vscode/extensions/chatparticipantdemo/out/
+.vscode/extensions/**/out/
+.vscode/extensions/**/dist

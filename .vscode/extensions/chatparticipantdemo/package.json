@@ -15,7 +15,11 @@
     "commands": [
       {
         "command": "tcfy25.llm",
-        "title": "Talk to LLM"
+        "title": "TCFY25 - Talk to LLM"
+      },
+      {
+        "command": "tcfy25.refactorCode",
+        "title": "TCFY25 - Refactor Code"
       }
     ],
     "chatParticipants": [
@@ -23,10 +27,25 @@
           "id": "tcfy25.speaker-assistant",
           "fullName": "Speaker Assistant",
           "name": "speaker",
-          "description": "How can I help you?",
+          "description": "Best Speaker Assistant.",
           "isSticky": true
+      },
+      {
+        "id": "tcfy25.advanced-assistant",
+        "fullName": "Advanced Assistant",
+        "name": "advanced",
+        "description": "Advanced Reasoning Copilot.",
+        "isSticky": true 
       }
-    ]
+    ],
+    "views": {
+      "explorer": [
+        {
+          "id": "todos",
+          "name": "Todos for Tech Connect FY25"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",

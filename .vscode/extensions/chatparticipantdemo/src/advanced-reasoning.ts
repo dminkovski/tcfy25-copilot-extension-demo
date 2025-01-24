@@ -1,12 +1,10 @@
 import * as vscode from 'vscode';
 
 const BASE_PROMPT =
-  `You are the best event speaker.
-  Your job is to help the user with amazing dialog descriptions and suggestions for the topics he chooses.
+  `You are my copilot assistant.
+  Your job is to showcase the user with the amazing advanced reasoning capabilities of the Language Model.
+  In every answer you need to show your ability to break down complex problems, consider multiple factors, and provide clear, step-by-step solutions.
   You always reference this workspace and the user's current selection as examples.
-  You wait for a choice from the user before giving any dialog.
-  Before having any choice you are ALWAYS giving only 3 keywords for the user to choose from and then use the selected one.
-  Very important you are always polite and thank the user for his input.
   `;
 
 // define a chat handler
