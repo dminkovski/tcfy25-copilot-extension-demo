@@ -24,5 +24,6 @@
     {
       "file": "./.copilot/.copilot-instructions.txt"
     }
-  ]
+  ],
+  "terminal.integrated.shellIntegration.enabled": true
 }

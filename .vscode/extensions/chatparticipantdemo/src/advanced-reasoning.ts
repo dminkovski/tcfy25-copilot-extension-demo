@@ -5,7 +5,7 @@ const BASE_PROMPT =
   Your job is to showcase the user with the amazing advanced reasoning capabilities of the Language Model.
   In every answer you need to show your ability to break down complex problems, consider multiple factors, and provide clear, step-by-step solutions.
   You always reference this workspace and the user's current selection as examples.
-  `;
+`;
 
 // define a chat handler
 export const handler: vscode.ChatRequestHandler = async (

@@ -1,0 +1,130 @@
+{
+  "name": "scriptrunnerdemo",
+  "displayName": "[workspace] ScriptRunnerDemo",
+  "description": "Tech Connect FY25 - ScriptRunner",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.96.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "chatParticipants": [
+      {
+        "id": "tcfy25.script-runner",
+        "fullName": "Script Runner",
+        "name": "scripty",
+        "description": "Best Script Runner.",
+        "isSticky": true,
+        "commands": [
+					{
+						"name": "list",
+						"description": "List all available tools"
+					}
+        ]
+      }
+    ],
+    "languageModelTools": [
+      {
+				"name": "runScriptInTerminal",
+				"tags": [
+					"terminal"
+				],
+				"displayName": "Run Script in Terminal",
+				"modelDescription": "Run the script in the terminal and return the output. Make sure to provide the correct command and path based on workspace context.",
+				"inputSchema": {
+					"type": "object",
+					"properties": {
+						"command": {
+							"type": "string",
+							"description": "The command to run"
+						}
+					},
+					"required": [
+						"command"
+					]
+				}
+			},
+      {
+				"name": "validateScript",
+				"tags": [
+					"terminal"
+				],
+				"displayName": "Validate the Script that ran in Terminal",
+				"modelDescription": "Run the command in the terminal that checks whether the script ran successful.",
+				"inputSchema": {
+					"type": "object",
+					"properties": {
+						"command": {
+							"type": "string",
+							"description": "The command to run to check success of the terminal"
+						}
+					},
+					"required": [
+						"command"
+					]
+				}
+			},
+      {
+				"name": "findAllScripts",
+				"displayName": "Find all scripts",
+				"modelDescription": "Find all existing scripts in the workspace"
+			},
+      {
+        "name": "fixScript",
+        "displayName": "Fix Script",
+        "modelDescription": "Fix the script in the workspace by overriding the file with new suggested code.",
+        "inputSchema": {
+					"type": "object",
+					"properties": {
+						"filePath": {
+							"type": "string",
+							"description": "The file path of the script that was executed and failed."
+						},
+            "fileContent": {
+							"type": "string",
+							"description": "The new script code that goes into the file."
+						}
+					},
+					"required": [
+						"filePath",
+            "fileContent" 
+					]
+				}
+      } 
+    ],
+    "views": {
+      "explorer": [
+        {
+          "id": "scripts",
+          "name": "Scripts found in Workspace"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.7",
+    "@types/node": "20.x",
+    "@types/vscode": "^1.96.0",
+    "@typescript-eslint/eslint-plugin": "^8.3.0",
+    "@typescript-eslint/parser": "^8.3.0",
+    "@vscode/test-cli": "^0.0.10",
+    "@vscode/test-electron": "^2.4.1",
+    "eslint": "^9.9.1",
+    "typescript": "^5.5.4"
+  },
+  "dependencies": {
+    "@vscode/prompt-tsx": "^0.3.0-alpha.17"
+  }
+}
