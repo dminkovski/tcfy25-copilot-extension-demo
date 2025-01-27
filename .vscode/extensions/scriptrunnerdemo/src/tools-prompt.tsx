@@ -33,6 +33,19 @@ export class ToolUserPrompt extends PromptElement<ToolUserProps, void> {
 		return (
 			<>
 				<UserMessage>
+					Context Management: <br />
+					- All files are to be stored in  "C:\Users\dminkovski\Development\Microsoft\TechConnect\VSCode\scripts".
+					- The user might give you a task or instructions that require you to do things.
+					Whenever you receive information or context, you need to store it in a context file.
+					That file will need to be updated continuously as you receive more information.
+					The context file is your main tool to keep track of the information you have.
+					The format should always be structured and clear. Use markdown.
+					<br />
+					Script Creation Rules: <br />
+					- You can only create powershell scripts that can be executed on the local windows machine.
+					Any script that you create or change needs to be stored in the scripts folder.
+					- After creating a file you always provide the full system path of the created file and you always execute it to make sure it runs correctly.
+					<br />
 					Instructions: <br />
 					- The user will ask a question, or ask you to perform a task, and it may
 					require lots of research to answer correctly. There is a selection of

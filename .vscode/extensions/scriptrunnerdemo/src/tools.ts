@@ -3,29 +3,107 @@ import { promisify } from 'util';
 
 import * as vscode from 'vscode';
 
-import { findScripts } from './scripts-tree';
-
 const execAsync = promisify(exec);
 
 
+const TRUST_WORTHY_SCRIPTS = new Map<string, boolean>();
+
 export function registerChatTools(context: vscode.ExtensionContext) {
-  context.subscriptions.push(vscode.lm.registerTool("runScriptInTerminal", new RunInTerminalTool()));
-  context.subscriptions.push(vscode.lm.registerTool("findAllScripts", new FindScriptsTool()));
-  context.subscriptions.push(vscode.lm.registerTool("fixScript", new FixScriptTool()));
-	context.subscriptions.push(vscode.lm.registerTool("validateScript", new RunInTerminalTool()));
+  context.subscriptions.push(vscode.lm.registerTool("runScript", new RunInTerminalTool()));
+  context.subscriptions.push(vscode.lm.registerTool("updateFile", new updateFileTool()));
+	context.subscriptions.push(vscode.lm.registerTool("createFile", new createFileTool()));
+	context.subscriptions.push(vscode.lm.registerTool("deleteFile", new deleteFileTool()));
 }
 
-interface IFixScript {
+interface IDeleteFile {
+	filePath: string;
+}
+
+export class deleteFileTool implements vscode.LanguageModelTool<IDeleteFile> {
+	async invoke(
+		options: vscode.LanguageModelToolInvocationOptions<IDeleteFile>,
+		token: vscode.CancellationToken
+	) {
+		const params = options.input as IDeleteFile;
+		const uri = vscode.Uri.file(params.filePath);
+
+		try {
+			await vscode.workspace.fs.delete(uri);
+			return new vscode.LanguageModelToolResult([new vscode.LanguageModelTextPart('File Deleted.')]);
+		} catch (err: any) {
+			return new vscode.LanguageModelToolResult([new vscode.LanguageModelTextPart(`Error: ${err.message}`)]);
+		}
+	}
+
+	async prepareInvocation(
+		options: vscode.LanguageModelToolInvocationPrepareOptions<IDeleteFile>,
+		_token: vscode.CancellationToken
+	) {
+		const confirmationMessages = {
+			title: 'Delete file',
+			message: new vscode.MarkdownString(
+				`Are you sure you want me to delete this file?` +
+				`\n\n\`\`\`\n${options.input.filePath}\n`
+			),
+		};
+		return {
+			confirmationMessages,
+			invocationMessage: `Deleting File...`,
+		};
+	}
+}
+
+interface ICreateFile {
+	fileContent: string;
+	fileName: string;
+}
+
+export class createFileTool implements vscode.LanguageModelTool<ICreateFile> {
+	async invoke(
+		options: vscode.LanguageModelToolInvocationOptions<ICreateFile>,
+		token: vscode.CancellationToken
+	) {
+		const params = options.input as ICreateFile;
+		const uri = vscode.Uri.file(params.fileName);
+		try {
+		// Create a new file with the content
+			const contentBuffer = Buffer.from(params.fileContent, 'utf-8');
+			await vscode.workspace.fs.writeFile(uri, new Uint8Array(contentBuffer));
+		}
+		catch(e:any) {
+			return new vscode.LanguageModelToolResult([new vscode.LanguageModelTextPart(`Error: ${e.message}`)]);
+		}
+		return new vscode.LanguageModelToolResult([new vscode.LanguageModelTextPart(`File Created: ${uri.fsPath}`)]);
+	}
+
+	async prepareInvocation(
+		options: vscode.LanguageModelToolInvocationPrepareOptions<ICreateFile>,
+		_token: vscode.CancellationToken
+	) {
+		const confirmationMessages = {
+			title: 'Creating File',
+			message: new vscode.MarkdownString(
+				`Create File: ${options.input.fileName}?`
+			),
+		};
+		return {
+			confirmationMessages,
+			invocationMessage: `Creating File...`,
+		};
+	}
+}
+
+interface IUpdateFile {
   fileContent: string;
   filePath: string;
 }
 
-export class FixScriptTool implements vscode.LanguageModelTool<IFixScript> {
+export class updateFileTool implements vscode.LanguageModelTool<IUpdateFile> {
 	async invoke(
-		options: vscode.LanguageModelToolInvocationOptions<IFixScript>,
+		options: vscode.LanguageModelToolInvocationOptions<IUpdateFile>,
 		token: vscode.CancellationToken
 	) {
-		const params = options.input as IFixScript;
+		const params = options.input as IUpdateFile;
 		// Open script file and save new content
     const uri = vscode.Uri.file(params.filePath);
     const doc = await vscode.workspace.openTextDocument(uri);
@@ -37,51 +115,27 @@ export class FixScriptTool implements vscode.LanguageModelTool<IFixScript> {
       editBuilder.replace(new vscode.Range(start, end), params.fileContent);
     });
     await doc.save();
-    return new vscode.LanguageModelToolResult([new vscode.LanguageModelTextPart('Script fixed')]);
+    return new vscode.LanguageModelToolResult([new vscode.LanguageModelTextPart('File Updated.')]);
 	}
 
 	async prepareInvocation(
-		options: vscode.LanguageModelToolInvocationPrepareOptions<IFixScript>,
+		options: vscode.LanguageModelToolInvocationPrepareOptions<IUpdateFile>,
 		_token: vscode.CancellationToken
 	) {
     const confirmationMessages = {
-			title: 'Fix Script',
+			title: 'Update File',
 			message: new vscode.MarkdownString(
-				`Override the script: ${options.input.filePath}?` +
+				`Update File: ${options.input.filePath}?` +
 				`\n\n\`\`\`\n${options.input.fileContent}\n\`\`\`\n`
 			),
 		};
 
 		return {
-			invocationMessage: `Fixing script...`,
+			invocationMessage: `Updating File...`,
 		};
 	}
 }
 
-
-interface IFindScriptParameters {
-}
-
-export class FindScriptsTool implements vscode.LanguageModelTool<IFindScriptParameters> {
-	async invoke(
-		options: vscode.LanguageModelToolInvocationOptions<IFindScriptParameters>,
-		token: vscode.CancellationToken
-	) {
-		const params = options.input as IFindScriptParameters;
-		const files = findScripts(vscode.workspace.workspaceFolders![0].uri.fsPath);
-    const strFiles = files.map((f) => `{path:${f.filePath}, name:${f.fileName}, content:${f.fileContent}}`).join('\n');
-		return new vscode.LanguageModelToolResult([new vscode.LanguageModelTextPart(`Found ${files.length} scripts":\n${strFiles}`)]);
-	}
-
-	async prepareInvocation(
-		options: vscode.LanguageModelToolInvocationPrepareOptions<IFindScriptParameters>,
-		_token: vscode.CancellationToken
-	) {
-		return {
-			invocationMessage: `Searching workspace for scripts`,
-		};
-	}
-}
 
 interface IRunInTerminalParameters {
 	command: string;
@@ -93,7 +147,7 @@ export class RunInTerminalTool
 		_token: vscode.CancellationToken
 	) {
 		const params = options.input as IRunInTerminalParameters;
-    
+    TRUST_WORTHY_SCRIPTS.set(params.command, true);
     try{
      // Run the command asynchronously
 			const { stdout, stderr } = await execAsync(params.command);
@@ -121,8 +175,11 @@ export class RunInTerminalTool
 			),
 		};
 
-		return {
+		return !TRUST_WORTHY_SCRIPTS.has(options.input.command) ?{
+			confirmationMessages,
 			invocationMessage: `Running command in terminal`,
+		} : {
+			invocationMessage: `Running trusted command in terminal`,
 		};
 	}
 }

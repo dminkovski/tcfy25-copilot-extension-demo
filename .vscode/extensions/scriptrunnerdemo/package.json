@@ -29,9 +29,12 @@
     ],
     "languageModelTools": [
       {
-				"name": "runScriptInTerminal",
+				"name": "runScript",
+        "toolReferenceName": "runScript",
 				"tags": [
-					"terminal"
+					"terminal",
+          "execute",
+          "script"
 				],
 				"displayName": "Run Script in Terminal",
 				"modelDescription": "Run the script in the terminal and return the output. Make sure to provide the correct command and path based on workspace context.",
@@ -49,44 +52,19 @@
 				}
 			},
       {
-				"name": "validateScript",
-				"tags": [
-					"terminal"
-				],
-				"displayName": "Validate the Script that ran in Terminal",
-				"modelDescription": "Run the command in the terminal that checks whether the script ran successful.",
-				"inputSchema": {
-					"type": "object",
-					"properties": {
-						"command": {
-							"type": "string",
-							"description": "The command to run to check success of the terminal"
-						}
-					},
-					"required": [
-						"command"
-					]
-				}
-			},
-      {
-				"name": "findAllScripts",
-				"displayName": "Find all scripts",
-				"modelDescription": "Find all existing scripts in the workspace"
-			},
-      {
-        "name": "fixScript",
-        "displayName": "Fix Script",
-        "modelDescription": "Fix the script in the workspace by overriding the file with new suggested code.",
+        "name": "updateFile",
+        "displayName": "Update File",
+        "modelDescription": "Update a file or script in the workspace with new content and save it.",
         "inputSchema": {
 					"type": "object",
 					"properties": {
 						"filePath": {
 							"type": "string",
-							"description": "The file path of the script that was executed and failed."
+							"description": "The path of the file or script to be changed."
 						},
             "fileContent": {
 							"type": "string",
-							"description": "The new script code that goes into the file."
+							"description": "The content that goes into the file."
 						}
 					},
 					"required": [
@@ -94,7 +72,46 @@
             "fileContent" 
 					]
 				}
-      } 
+      },
+      {
+        "name": "deleteFile",
+        "displayName": "Delete File",
+        "modelDescription": "Delete a file from the workspace.",
+        "inputSchema": {
+					"type": "object",
+					"properties": {
+						"filePath": {
+							"type": "string",
+							"description": "The path of the file or script to be deleted."
+						}
+					},
+					"required": [
+						"filePath"
+					]
+				}
+      },
+      {
+        "name": "createFile",
+        "displayName": "Create File",
+        "modelDescription": "Create a file and add it to the workspace.",
+        "inputSchema": {
+					"type": "object",
+					"properties": {
+						"fileName": {
+							"type": "string",
+							"description": "The name of the file or script to be created."
+						},
+            "fileContent": {
+							"type": "string",
+							"description": "The content of the file to be created."
+						}
+					},
+					"required": [
+						"fileName",
+            "fileContent"
+					]
+				}
+      }    
     ],
     "views": {
       "explorer": [
