@@ -14,17 +14,17 @@ export const handler: vscode.ChatRequestHandler = async (
   request: vscode.ChatRequest,
   context: vscode.ChatContext,
   stream: vscode.ChatResponseStream,
-  token: vscode.CancellationToken,
+  token: vscode.CancellationToken
 ) => {
   if (request.command === 'list') {
-    stream.markdown(`Available tools: ${vscode.lm.tools.map(tool => tool.name).join(', ')}\n\n`);
+    stream.markdown(`Available tools: ${vscode.lm.tools.filter(tool => tool.tags.includes('multi-agent')).join(', ')}\n\n`);
       return;
   }
 
   const [model] = await vscode.lm.selectChatModels({ vendor: 'copilot', family: 'gpt-4o' });
   
    // Use all tools, or tools with the tags that are relevant.
-   const tools = vscode.lm.tools;
+   const tools = vscode.lm.tools.filter(tool => tool.tags.includes('multi-agent'));
      const options: vscode.LanguageModelChatRequestOptions = {
     justification: 'To make a request to @toolsTSX',
   };

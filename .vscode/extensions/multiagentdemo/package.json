@@ -1,0 +1,100 @@
+{
+  "name": "multiagentdemo",
+  "displayName": "[workspace] MultiAgentDemo",
+  "description": "Tech Connect FY25 - MultiAgentDemo",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.96.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "chatParticipants": [
+      {
+        "id": "tcfy25.multi-agent",
+        "fullName": "Multi Agent",
+        "name": "multiagent",
+        "description": "Best Multi Agent.",
+        "isSticky": true,
+        "commands": [
+					{
+						"name": "list",
+						"description": "List all available tools"
+					}
+        ]
+      }
+    ],
+    "languageModelTools": [
+      {
+				"name": "ProjectPlannerAgent",
+        "tags": ["multi-agent"],
+        "toolReferenceName": "projectPlannerAgent",
+				"displayName": "Planning Project",
+				"modelDescription": "Agent that is responsible for planning a project.",
+				"inputSchema": {
+					"type": "object",
+					"properties": {
+						"projectScope": {
+							"type": "string",
+							"description": "The project description to be done."
+						}
+					},
+					"required": [
+						"projectScope"
+					]
+				}
+			}, {
+        "name": "CallScripty",
+        "tags": ["multi-agent"],
+        "toolReferenceName": "CallScripty",
+        "displayName": "Call Scripty",
+        "modelDescription": "Call the Scripty Chat Participant to do something.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "query": {
+              "type": "string",
+              "description": "The query for the chat Participant to handle"
+            }
+          },
+          "required": [
+            "query"
+          ]
+        }
+      }
+    ],
+    "views": {
+      "explorer": [
+        {
+          "id": "scripts",
+          "name": "Scripts found in Workspace"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.7",
+    "@types/node": "20.x",
+    "@types/vscode": "^1.96.0",
+    "@typescript-eslint/eslint-plugin": "^8.3.0",
+    "@typescript-eslint/parser": "^8.3.0",
+    "@vscode/test-cli": "^0.0.10",
+    "@vscode/test-electron": "^2.4.1",
+    "eslint": "^9.9.1",
+    "typescript": "^5.5.4"
+  },
+  "dependencies": {
+    "@vscode/prompt-tsx": "^0.3.0-alpha.17"
+  }
+}

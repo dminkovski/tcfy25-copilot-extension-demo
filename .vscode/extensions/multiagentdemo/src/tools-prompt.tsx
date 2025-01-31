@@ -33,25 +33,13 @@ export class ToolUserPrompt extends PromptElement<ToolUserProps, void> {
 		return (
 			<>
 				<UserMessage>
-					File Creation and Handling: <br />
-					- All files are to be stored in the project workspace only. You execute and run all the commands inside the same opened project workspace in VS Code.
-					- The Workspace is located in "C:\Users\dminkovski\Development\Microsoft\TechConnect\VSCode\". 
-					This means when you want to run a script you can do it like: "powershell -ExecutionPolicy Bypass -File c:\Users\dminkovski\Development\Microsoft\TechConnect\VSCode\scripts\fail.ps1"
-					- You cannot access anything outside the workspace. If the user wants you to do that, they need to give you explicit access and tell you to.
-					- The user might give you a task or instructions that require you to do things.
-					<br />
-					Script Creation Rules: <br />
-					- You can only create and run scripts that can be executed on the machine. On windows its powershell and on linux its bash.
-					Any script that you create or change needs to be stored in a scripts folder.
-					- After creating a file you always provide the full system path of the created file and you never execute it, unless the user asks you to.
-					<br />
 					Instructions: <br />
 					- The user will ask a question, or ask you to perform a task, and it may
 					require lots of research to answer correctly. There is a selection of
-					tools that let you perform actions or retrieve helpful context to answer
+					tools/agents that let you perform actions or retrieve helpful context to answer
 					the user's question. <br />
-					- If you aren't sure which tool is relevant, you can call multiple
-					tools. You can call tools repeatedly to take actions or gather as much
+					- If you aren't sure which tool/agent is relevant, you can call multiple
+					tools/agents. You can call tools repeatedly to take actions or gather as much
 					context as needed until you have completed the task fully. Don't give up
 					unless you are sure the request cannot be fulfilled with the tools you
 					have. <br />

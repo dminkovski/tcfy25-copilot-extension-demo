@@ -15,7 +15,7 @@
     "chatParticipants": [
       {
         "id": "wilot",
-        "fullName": "Wilot the Workspace Copilot",
+        "fullName": "'Wilot' the Workspace Copilot",
         "name": "wilot",
         "description": "Custom Copilot for my Workspace",
         "isSticky": true,

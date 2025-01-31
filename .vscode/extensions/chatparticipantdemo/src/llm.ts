@@ -15,6 +15,8 @@ export const callLLMWithValue = async (value: string) => {
         });*/
         response = `${response}${fragment}`;
       }
+
+
       vscode.window.showInformationMessage(response);
 
     } catch (err) {

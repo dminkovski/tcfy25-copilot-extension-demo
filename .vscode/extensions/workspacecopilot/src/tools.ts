@@ -1,10 +1,6 @@
 import { exec } from 'child_process';
-import { promisify } from 'util';
 
 import * as vscode from 'vscode';
-
-const execAsync = promisify(exec);
-
 
 const TRUST_WORTHY_SCRIPTS = new Map<string, boolean>();
 
@@ -43,7 +39,11 @@ export class deleteFileTool implements vscode.LanguageModelTool<IDeleteFile> {
 			title: 'Delete file',
 			message: new vscode.MarkdownString(
 				`Are you sure you want me to delete this file?` +
-				`\n\n\`\`\`\n${options.input.filePath}\n`
+				`
+
+
+\t			${options.input.filePath}
+`
 			),
 		};
 		return {
@@ -126,7 +126,12 @@ export class updateFileTool implements vscode.LanguageModelTool<IUpdateFile> {
 			title: 'Update File',
 			message: new vscode.MarkdownString(
 				`Update File: ${options.input.filePath}?` +
-				`\n\n\`\`\`\n${options.input.fileContent}\n\`\`\`\n`
+				`
+
+
+\t			${options.input.fileContent}
+
+`
 			),
 		};
 
@@ -149,17 +154,15 @@ export class RunInTerminalTool
 		const params = options.input as IRunInTerminalParameters;
     TRUST_WORTHY_SCRIPTS.set(params.command, true);
     try{
-     // Run the command asynchronously
-			const { stdout, stderr } = await execAsync(params.command);
-
-			// Return output or error as a result
-			const resultText = stderr ? `Error: ${stderr}` : stdout;
+     	// Run the command asynchronously
+			const { stdout, stderr } = await execAsyncWithTimeout(params.command, 10000);
+			
 			return new vscode.LanguageModelToolResult([
-				new vscode.LanguageModelTextPart(resultText),
+				new vscode.LanguageModelTextPart(stdout + " " +stderr),
 			]);
     }
     catch(err:any){
-      return new vscode.LanguageModelToolResult([new vscode.LanguageModelTextPart(err?.message)]);
+			return new vscode.LanguageModelToolResult([new vscode.LanguageModelTextPart(err?.message)]);
     }
 	}
 
@@ -171,15 +174,36 @@ export class RunInTerminalTool
 			title: 'Run command in terminal',
 			message: new vscode.MarkdownString(
 				`Run this command in a terminal?` +
-				`\n\n\`\`\`\n${options.input.command}\n\`\`\`\n`
+				`
+
+
+\t			${options.input.command}
+
+`
 			),
 		};
 
-		return !TRUST_WORTHY_SCRIPTS.has(options.input.command) ?{
+		return {
 			confirmationMessages,
 			invocationMessage: `Running command in terminal`,
-		} : {
-			invocationMessage: `Running trusted command in terminal`,
 		};
 	}
+}
+
+
+async function execAsyncWithTimeout(command: string, timeout: number): Promise<{ stdout: string, stderr: string }> {
+  return new Promise((resolve, reject) => {
+    const child = exec(command, (error, stdout, stderr) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve({ stdout, stderr });
+      }
+    });
+
+    setTimeout(() => {
+      child.kill();
+      resolve({stdout:'Command timed out or successfully running over 10 seconds', stderr:''});
+    }, timeout);
+  });
 }
