@@ -1,57 +1,33 @@
 import * as vscode from 'vscode';
 
-const PROMPT = "You are a project manager. You will receive a project scope and you will need to provide a project plan. The plan should be detailed and should include the project scope, timeline, resources, and budget. You can ask for more information if needed.";
-
 export function registerChatTools(context: vscode.ExtensionContext) {
-  context.subscriptions.push(vscode.lm.registerTool("ProjectPlannerAgent", new ProjectPlannerAgent()));
-	context.subscriptions.push(vscode.lm.registerTool("CallScripty", new CallScriptyAgent()));
+	context.subscriptions.push(vscode.lm.registerTool("CallAgent", new CallAgent()));
 }
-
-
-//      
-interface IScriptyInput {
-	query: string;
+      
+interface ICallAgentInput {
+	agent: string;
+	request: string;
 }
-export class CallScriptyAgent implements vscode.LanguageModelTool<IScriptyInput> {
+export class CallAgent implements vscode.LanguageModelTool<ICallAgentInput> {
 	async invoke(
-		options: vscode.LanguageModelToolInvocationOptions<IScriptyInput>,
+		options: vscode.LanguageModelToolInvocationOptions<ICallAgentInput>,
 		token: vscode.CancellationToken
 	) {
-		const params = options.input as IScriptyInput;
-		// Call wilot
-		const result = await vscode.commands.executeCommand('github.copilot.chat.explain', '@wilot '+params.query);
-		return new vscode.LanguageModelToolResult([new vscode.LanguageModelTextPart(`I called Scripty: ${result}`)]);
-	}
-}
-
-interface IProjectPlannerInput {
-		projectScope: string;
-	}
-export class ProjectPlannerAgent implements vscode.LanguageModelTool<IProjectPlannerInput> {
-	async invoke(
-		options: vscode.LanguageModelToolInvocationOptions<IProjectPlannerInput>,
-		token: vscode.CancellationToken
-	) {
-		const params = options.input as IProjectPlannerInput;
-		try {
-			const [model] = await vscode.lm.selectChatModels({ vendor: 'copilot', family: 'gpt-4o' });
-			const messages = [vscode.LanguageModelChatMessage.User(PROMPT),vscode.LanguageModelChatMessage.User("This is the project scope: "+params.projectScope)];
-			const chatResponse = await model?.sendRequest(messages, {}, new vscode.CancellationTokenSource().token);
-	
-			try {
-				let response = '';
-				for await (const fragment of chatResponse.text) {
-					response = `${response}${fragment}`;
+		const params = options.input as ICallAgentInput;
+		
+		await vscode.commands.executeCommand('workbench.action.chat.open', {query:`@${params.agent} ${params.request}`});
+		/*	previousRequests: [
+				{
+					request: params.previousRequestByUser,
+					response: params.previousResponseByCopilot,
 				}
-				return new vscode.LanguageModelToolResult([new vscode.LanguageModelTextPart(response)]);
-	
-			} catch (err:any) {
-				return new vscode.LanguageModelToolResult([new vscode.LanguageModelTextPart(err.message)]);
-			}
-	
-		} catch (err:any) {
-			return new vscode.LanguageModelToolResult([new vscode.LanguageModelTextPart(err.message)]);
-		}
+			]}); */
 
+		await vscode.commands.executeCommand("workbench.panel.chat.view.copilot.focus");
+		await vscode.commands.executeCommand("editor.action.deleteLines");
+		await vscode.commands.executeCommand("type", {"text":  `@${params.agent} ${params.request}`});
+		await vscode.commands.executeCommand("github.copilot.chat.explain", {query:`@${params.agent} ${params.request}`} );
+
+		return new vscode.LanguageModelToolResult([new vscode.LanguageModelTextPart(`Called Agent.`)]);
 	}
 }

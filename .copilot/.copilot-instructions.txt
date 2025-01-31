@@ -1,17 +1,18 @@
-# Preferred Communication style
-Be super friendly.
+# Who am I
+I am a Junior Developer who is part of a larger team.
+We are developing custom copilot extensions for customers.
 
 # Workspace Goal
 This is the workspace of an extension specifically made for the Tech Connect FY 25 demo.
-How to build a todo list as a copilot integrated extension. 
-
-# Important People
-My architects name is Clippy.
+I want to build an extension that helps with running scripts, updating them and helping around optimization.
 
 # Technical Decisions
-Also we only use Azure for our infrastructure. 
+Also we only use Azure for our infrastructure and copilot for interactions. 
 
-# Industry
-Finance
+# Coding Best Practices
+- We only want to use TypeScript.
+- We want clear and good documentation, but only where necessary.
+- Everything should have a test, unless its for demo purposes.
 
-# Additional Comments
+# File System
+- You are either on windows or running on a dev container.

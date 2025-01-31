@@ -14,10 +14,23 @@
   "contributes": {
     "chatParticipants": [
       {
-        "id": "tcfy25.multi-agent",
-        "fullName": "Multi Agent",
-        "name": "multiagent",
-        "description": "Best Multi Agent.",
+        "id": "multi-agent.coordinator",
+        "fullName": "Coordinator",
+        "name": "coordinator",
+        "description": "Best Multi Agent Coordinator",
+        "isSticky": true,
+        "commands": [
+					{
+						"name": "list",
+						"description": "List all available tools"
+					}
+        ]
+      },
+      {
+        "id": "multi-agent.pm",
+        "fullName": "Project Manager",
+        "name": "pm",
+        "description": "Best Project Manager",
         "isSticky": true,
         "commands": [
 					{
@@ -29,39 +42,55 @@
     ],
     "languageModelTools": [
       {
-				"name": "ProjectPlannerAgent",
+        "name": "CallAgent",
         "tags": ["multi-agent"],
-        "toolReferenceName": "projectPlannerAgent",
-				"displayName": "Planning Project",
-				"modelDescription": "Agent that is responsible for planning a project.",
-				"inputSchema": {
-					"type": "object",
-					"properties": {
-						"projectScope": {
-							"type": "string",
-							"description": "The project description to be done."
-						}
-					},
-					"required": [
-						"projectScope"
-					]
-				}
-			}, {
-        "name": "CallScripty",
-        "tags": ["multi-agent"],
-        "toolReferenceName": "CallScripty",
-        "displayName": "Call Scripty",
-        "modelDescription": "Call the Scripty Chat Participant to do something.",
+        "toolReferenceName": "CallAgent",
+        "displayName": "Call Agent",
+        "modelDescription": "Call an agent to do something.",
         "inputSchema": {
           "type": "object",
           "properties": {
-            "query": {
+            "agent": {
               "type": "string",
-              "description": "The query for the chat Participant to handle"
+              "description": "The name of the chat participant / agent to call"
+            },
+            "previousRequestByUser": {
+              "type": "string",
+              "description": "The previous request by the user"
+            },
+            "previousResponseByCopilot": {
+              "type": "string",
+              "description": "The previous response by the copilot"
+            },
+            "request": {
+              "type": "string",
+              "description": "The request to send to the agent"
             }
           },
           "required": [
-            "query"
+            "agent",
+            "request",
+            "previousRequestByUser",
+            "previousResponseByCopilot"
+          ]
+        }
+      },
+      {
+        "name": "CreateProjectPlan",
+        "tags": ["project-manager"],
+        "toolReferenceName": "CreateProjectPlan",
+        "displayName": "Create Project Plan",
+        "modelDescription": "Creates a clear project plan.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "projectDescription": {
+              "type": "string",
+              "description": "The initial project description and briefing."
+            }
+          },
+          "required": [
+            "projectDescription"
           ]
         }
       }

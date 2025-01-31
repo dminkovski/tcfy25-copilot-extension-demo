@@ -1,3 +1,6 @@
+const fs = require('fs');
+const path = require('path');
+
 import {
 	AssistantMessage,
 	BasePromptElementProps,
@@ -22,31 +25,43 @@ export interface ToolCallRound {
 }
 
 export interface ToolUserProps extends BasePromptElementProps {
+	roleDescription: string;
 	request: vscode.ChatRequest;
 	context: vscode.ChatContext;
 	toolCallRounds: ToolCallRound[];
 	toolCallResults: Record<string, vscode.LanguageModelToolResult>;
 }
+const packageJsonPath = path.join(__dirname, 'package.json');
+const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
+
+// Extract chatParticipants
+const chatParticipants = packageJson.chatParticipants || [];
 
 export class ToolUserPrompt extends PromptElement<ToolUserProps, void> {
 	render(_state: void, _sizing: PromptSizing) {
 		return (
 			<>
 				<UserMessage>
+					Your role: 
+					{ this.props.roleDescription}
+					<br />
 					Instructions: <br />
 					- The user will ask a question, or ask you to perform a task, and it may
-					require lots of research to answer correctly. There is a selection of
-					tools/agents that let you perform actions or retrieve helpful context to answer
-					the user's question. <br />
-					- If you aren't sure which tool/agent is relevant, you can call multiple
-					tools/agents. You can call tools repeatedly to take actions or gather as much
-					context as needed until you have completed the task fully. Don't give up
-					unless you are sure the request cannot be fulfilled with the tools you
+					require lots of research to answer correctly. 
+					You are provided with a set of agents that you can call to help you answer the user's question.
+					<br />
+					- If you aren't sure which agent is relevant, you can call multiple
+					agents. You can call tools repeatedly to take actions or gather as much
+					context as needed until you have completed the task fully. 
+					Always use a tool that may help you to answer the user's question. <br />
+					Don't give up unless you are sure the request cannot be fulfilled with the tools you
 					have. <br />
 					- Don't make assumptions about the situation- gather context first, then
 					perform the task or answer the question. <br />
-					- Don't ask the user for confirmation to use tools, just use them. <br/>
-					- Fix the issues with the tools or the scripts executed by the tools.
+					- Don't ask the user for confirmation to use agents or tools, just use them.
+					<br />
+					Available agents: <br />
+					"pm" - Project Manager <br />
 				</UserMessage>
 				<History context={this.props.context} priority={10} />
 				<PromptReferences

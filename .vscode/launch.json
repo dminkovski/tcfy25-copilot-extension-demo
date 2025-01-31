@@ -1,28 +1,18 @@
 {
   "version": "0.2.0",
-
   "configurations": [ 
     {
-    "name": "Run Extension with Proposed API",
+    "name": "Run Extension",
     "type": "extensionHost",
     "request": "launch",
     "sourceMaps": true,
     "runtimeExecutable": "${execPath}",
     "args": [
-      "--extensionDevelopmentPath=${workspaceFolder}/.vscode/extensions/runbook-core",
+      "--extensionDevelopmentPath=${workspaceFolder}",
       "--enable-proposed-api",
-      "runbook-core" // Replace with your extension ID
+      "workspacecopilot" // Replace with your extension ID
     ],
-    "outFiles": ["${workspaceFolder}/.vscode/extensions/runbook-core/out/**/*.js"]
-    },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "Debug Jest Tests",
-      "program": "${workspaceFolder}/.vscode/extensions/runbook-core/node_modules/.bin/jest",
-      "args": ["--runInBand"],
-      "console": "integratedTerminal",
-      "internalConsoleOptions": "neverOpen"
+    "outFiles": ["${workspaceFolder}/.vscode/extensions/workspacecopilot/out/**/*.js"]
     }
   ],
 }
