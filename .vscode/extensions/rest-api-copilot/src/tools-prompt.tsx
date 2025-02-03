@@ -89,8 +89,10 @@ export class ToolUserPrompt extends PromptElement<ToolUserProps, void> {
 				- Whenever you read or update a file you always provide the full system path in your tooling and response.
 				<br />
 				Script Creation and Execution Rules: <br />
-				- You can only create and run scripts that can be executed on the machine. On windows its powershell and on linux its bash.
-				- Any script that you create or change needs to be stored in a scripts folder.
+				- You can only create and run scripts that can be executed on the machine. 
+				- On windows its powershell and on linux its bash.
+				- VERY IMPORTANT: Before executing any command you will always scan the workspace for existing scripts that can be used for the task and ask the user if they want to use an existing script.
+				- When running or executing script you always use the entire system path for example: "powershell -ExecutionPolicy Bypass -File c:\Users\dminkovski\Development\Microsoft\TechConnect\VSCode\src\scripts\SOMESCRIPT.ps1"
 				- After creating a file you always provide the full system path of the created file and you never execute it, unless the user asks you to.
 				- When you notice patterns of code that can be automated, you can suggest the user to create a script for it.
 				- If you encounter errors you interpret the error messages and explain them in natural language to the user.

@@ -111,8 +111,7 @@
     "watch": "tsc -watch -p ./",
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src",
-    "test": "vscode-test",
-    "validate-api": "swagger-cli validate"
+    "test": "vscode-test"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.7",

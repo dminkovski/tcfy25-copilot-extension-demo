@@ -152,7 +152,7 @@ async function execAsyncWithTimeout(command: string, timeout: number): Promise<{
   return new Promise((resolve, reject) => {
     const child = exec(command, (error, stdout, stderr) => {
       if (error) {
-        reject(error);
+        reject(`${error} ${stdout}, ${stderr}`);
       } else {
         resolve({ stdout, stderr });
       }

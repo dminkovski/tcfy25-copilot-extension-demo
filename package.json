@@ -2,10 +2,10 @@
   "name": "REST API with Copilot",
   "version": "1.0.0",
   "description": "REST API",
-  "main": "server.js",
+  "main": "src/server.ts",
   "type": "module",
   "scripts": {
-    "start": "npx tsx --env-file=.env --watch  server.ts"
+    "start": "npx tsx --env-file=.env --watch  src/server.ts"
   },
   "author": "David Minkovski",
   "license": "MIT",

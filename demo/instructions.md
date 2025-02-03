@@ -44,3 +44,7 @@ Copilot offers a follow up action to fix there errors, which the developer accep
 
 **Key Takeaway:** 
 By integrating with existing tools, Copilot **removes friction from validation processes**, ensuring that APIs remain **compliant with specifications without manual debugging**.  
+
+### Additional
+**Prompts:**
+> **@rest** I am supposed to implement the missing API endpoint according to the openAPI spec, can you help me?

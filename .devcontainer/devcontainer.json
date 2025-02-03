@@ -1,11 +1,10 @@
 {
   "name": "Workspace DevContainer",
-  "image": "mcr.microsoft.com/devcontainers/typescript-node:1-22-bookworm",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:18-bookworm",
   "features": {
     "ghcr.io/devcontainers/features/azure-cli:1": {},
     "ghcr.io/devcontainers/features/git:1": {},
-    "ghcr.io/devcontainers/features/github-cli:1": {},
-    "ghcr.io/azure/azure-dev/azd:0": {}
+    "ghcr.io/devcontainers/features/github-cli:1": {}
   },
   // Configure tool-specific properties.
   "customizations": {
@@ -16,15 +15,11 @@
         "github.copilot-chat",
         "github.copilot"
       ],
-      //some things, like schemas and editor configs should probably be moved here
-      //instead of the workspace settings
       "settings": {
       }
     }
   },
-  "mounts": [
-    "source=${localWorkspaceFolder}"
-  ],
   "containerUser": "root",
-  "remoteUser": "root"
+  "remoteUser": "root",
+  "forwardPorts": [3000]
 }

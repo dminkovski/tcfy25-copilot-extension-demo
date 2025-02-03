@@ -16,8 +16,17 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.get("/todos", (req: Request, res: Response) => {
+    console.log("GET /todos response:", todos);
     res.json(todos);
 });
+
+app.post("/todos", (req: Request, res: Response) => {
+    const { name } = req.body;
+    const newTodo = { id: todos.length + 1, name };
+    todos.push(newTodo);
+    res.status(201).json(newTodo);
+});
+
 // Start the Express server
 app.listen(port, () => {
     console.log(`The server is running at http://localhost:${port}`);
