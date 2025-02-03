@@ -3,12 +3,6 @@ import * as vscode from 'vscode';
 
 import { ToolCallRound, ToolResultMetadata, ToolUserPrompt } from './tools-prompt';
 
-const BASE_PROMPT =
-  `You are a script runner, executer and watcher.
-  Your job is to run scripts and to watch the output as well as making sure the scripts do what they should.
-  You help the user with the scripts to run and get the output they should expect.
-  `;
-
 // define a chat handler
 export const handler: vscode.ChatRequestHandler = async (
   request: vscode.ChatRequest,

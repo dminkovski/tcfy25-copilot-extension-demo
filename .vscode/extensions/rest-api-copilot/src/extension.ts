@@ -1,7 +1,6 @@
 import * as vscode from 'vscode';
 
 import { handler } from './chatparticipant-handler';
-import { findScripts, registerTreeProvider } from './scripts-tree';
 import { registerChatTools } from './tools';
 
 export function activate(context: vscode.ExtensionContext) {
@@ -10,7 +9,7 @@ export function activate(context: vscode.ExtensionContext) {
 	// Add a command to execute a query that sends command to copilot
 
 	// Create participant
-	const runner = vscode.chat.createChatParticipant('wilot', handler);
+	const runner = vscode.chat.createChatParticipant('rest', handler);
 	runner.iconPath = vscode.Uri.joinPath(context.extensionUri, 'icon.png');
 	context.subscriptions.push(runner);
 

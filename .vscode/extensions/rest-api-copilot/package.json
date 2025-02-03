@@ -1,0 +1,158 @@
+{
+  "name": "rest-api-copilot",
+  "displayName": "[workspace] RESTAPICopilot",
+  "description": "Tech Connect FY25 - Demo for GH Copilot Customization in Workspace",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.96.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "chatParticipants": [
+      {
+        "id": "rest",
+        "fullName": "'REST-API' Copilot",
+        "name": "rest",
+        "description": "REST API Copilot for NodeJS Web Apps",
+        "isSticky": true,
+        "commands": [
+          {
+            "name": "list",
+            "description": "List all available tools"
+          }
+        ]
+      }
+    ],
+    "languageModelTools": [
+      {
+        "name": "validateAPI",
+        "toolReferenceName": "validateAPI",
+        "tags": [
+          "rest",
+          "validate",
+          "REST API",
+          "swagger",
+          "OpenAPI",
+          "swagger-Clu"
+        ],
+        "displayName": "Validating API...",
+        "modelDescription": "Validates API contracts against an OpenAPI (Swagger) specification and provides & interprets the results and explains in natural language.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "api": {
+              "type": "string",
+              "description": "The API to be validated."
+            }
+          },
+          "required": [
+            ""
+          ]
+        }
+      },
+      {
+        "name": "runScript",
+        "toolReferenceName": "runScript",
+        "tags": [
+          "terminal",
+          "execute",
+          "script",
+          "rest"
+        ],
+        "displayName": "Run Script in Terminal",
+        "modelDescription": "Run the script in the terminal and return the output. Make sure to provide the correct command and path based on workspace context.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "command": {
+              "type": "string",
+              "description": "The command to run"
+            }
+          },
+          "required": [
+            "command"
+          ]
+        }
+      },
+      {
+        "name": "updateFile",
+        "toolReferenceName": "updateFile",
+        "tags": [
+          "file",
+          "update",
+          "fix",
+          "rest"
+        ],
+        "displayName": "Update File",
+        "modelDescription": "Update a file or script in the workspace with new content and save it.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "filePath": {
+              "type": "string",
+              "description": "The path of the file or script to be changed."
+            },
+            "fileContent": {
+              "type": "string",
+              "description": "The content that goes into the file."
+            }
+          },
+          "required": [
+            "filePath",
+            "fileContent"
+          ]
+        }
+      },
+      {
+        "name": "createFile",
+        "displayName": "Create File",
+        "modelDescription": "Create a file and add it to the workspace.",
+        "inputSchema": {
+					"type": "object",
+					"properties": {
+						"fileName": {
+							"type": "string",
+							"description": "The name of the file or script to be created."
+						},
+            "fileContent": {
+							"type": "string",
+							"description": "The content of the file to be created."
+						}
+					},
+					"required": [
+						"fileName",
+            "fileContent"
+					]
+				}
+      }   
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src",
+    "test": "vscode-test",
+    "validate-api": "swagger-cli validate"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.7",
+    "@types/node": "20.x",
+    "@types/vscode": "^1.96.0",
+    "@typescript-eslint/eslint-plugin": "^8.3.0",
+    "@typescript-eslint/parser": "^8.3.0",
+    "@vscode/test-cli": "^0.0.10",
+    "@vscode/test-electron": "^2.4.1",
+    "eslint": "^9.9.1",
+    "typescript": "^5.5.4"
+  },
+  "dependencies": {
+    "@vscode/prompt-tsx": "^0.3.0-alpha.17",
+    "swagger-cli": "^4.0.4"
+  }
+}

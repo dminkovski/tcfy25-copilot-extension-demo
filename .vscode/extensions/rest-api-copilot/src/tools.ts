@@ -8,47 +8,43 @@ export function registerChatTools(context: vscode.ExtensionContext) {
   context.subscriptions.push(vscode.lm.registerTool("runScript", new RunInTerminalTool()));
   context.subscriptions.push(vscode.lm.registerTool("updateFile", new updateFileTool()));
 	context.subscriptions.push(vscode.lm.registerTool("createFile", new createFileTool()));
-	context.subscriptions.push(vscode.lm.registerTool("deleteFile", new deleteFileTool()));
+	context.subscriptions.push(vscode.lm.registerTool("validateAPI", new validateAPITool()));
 }
 
-interface IDeleteFile {
-	filePath: string;
+interface IValidateAPI {
+	url: string;
 }
-
-export class deleteFileTool implements vscode.LanguageModelTool<IDeleteFile> {
+export class validateAPITool implements vscode.LanguageModelTool<IValidateAPI> {
 	async invoke(
-		options: vscode.LanguageModelToolInvocationOptions<IDeleteFile>,
+		options: vscode.LanguageModelToolInvocationOptions<IValidateAPI>,
 		token: vscode.CancellationToken
 	) {
-		const params = options.input as IDeleteFile;
-		const uri = vscode.Uri.file(params.filePath);
-
-		try {
-			await vscode.workspace.fs.delete(uri);
-			return new vscode.LanguageModelToolResult([new vscode.LanguageModelTextPart('File Deleted.')]);
-		} catch (err: any) {
-			return new vscode.LanguageModelToolResult([new vscode.LanguageModelTextPart(`Error: ${err.message}`)]);
-		}
+		try{
+			// Run the command asynchronously
+		 const { stdout, stderr } = await execAsyncWithTimeout("npm run validate-api", 10000);
+		 
+		 return new vscode.LanguageModelToolResult([
+			 new vscode.LanguageModelTextPart(stdout + " " +stderr),
+		 ]);
+	 }
+	 catch(err:any){
+		 return new vscode.LanguageModelToolResult([new vscode.LanguageModelTextPart(err?.message)]);
+	 }
 	}
 
 	async prepareInvocation(
-		options: vscode.LanguageModelToolInvocationPrepareOptions<IDeleteFile>,
+		options: vscode.LanguageModelToolInvocationPrepareOptions<IValidateAPI>,
 		_token: vscode.CancellationToken
 	) {
 		const confirmationMessages = {
-			title: 'Delete file',
+			title: 'Validate API',
 			message: new vscode.MarkdownString(
-				`Are you sure you want me to delete this file?` +
-				`
-
-
-\t			${options.input.filePath}
-`
+				`Validate API: ${options.input.url}?`
 			),
 		};
 		return {
 			confirmationMessages,
-			invocationMessage: `Deleting File...`,
+			invocationMessage: `Validating API...`,
 		};
 	}
 }
