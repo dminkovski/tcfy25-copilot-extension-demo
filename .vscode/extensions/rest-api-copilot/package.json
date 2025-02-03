@@ -29,32 +29,6 @@
     ],
     "languageModelTools": [
       {
-        "name": "validateAPI",
-        "toolReferenceName": "validateAPI",
-        "tags": [
-          "rest",
-          "validate",
-          "REST API",
-          "swagger",
-          "OpenAPI",
-          "swagger-Clu"
-        ],
-        "displayName": "Validating API...",
-        "modelDescription": "Validates API contracts against an OpenAPI (Swagger) specification and provides & interprets the results and explains in natural language.",
-        "inputSchema": {
-          "type": "object",
-          "properties": {
-            "api": {
-              "type": "string",
-              "description": "The API to be validated."
-            }
-          },
-          "required": [
-            ""
-          ]
-        }
-      },
-      {
         "name": "runScript",
         "toolReferenceName": "runScript",
         "tags": [

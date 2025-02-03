@@ -8,45 +8,6 @@ export function registerChatTools(context: vscode.ExtensionContext) {
   context.subscriptions.push(vscode.lm.registerTool("runScript", new RunInTerminalTool()));
   context.subscriptions.push(vscode.lm.registerTool("updateFile", new updateFileTool()));
 	context.subscriptions.push(vscode.lm.registerTool("createFile", new createFileTool()));
-	context.subscriptions.push(vscode.lm.registerTool("validateAPI", new validateAPITool()));
-}
-
-interface IValidateAPI {
-	url: string;
-}
-export class validateAPITool implements vscode.LanguageModelTool<IValidateAPI> {
-	async invoke(
-		options: vscode.LanguageModelToolInvocationOptions<IValidateAPI>,
-		token: vscode.CancellationToken
-	) {
-		try{
-			// Run the command asynchronously
-		 const { stdout, stderr } = await execAsyncWithTimeout("npm run validate-api", 10000);
-		 
-		 return new vscode.LanguageModelToolResult([
-			 new vscode.LanguageModelTextPart(stdout + " " +stderr),
-		 ]);
-	 }
-	 catch(err:any){
-		 return new vscode.LanguageModelToolResult([new vscode.LanguageModelTextPart(err?.message)]);
-	 }
-	}
-
-	async prepareInvocation(
-		options: vscode.LanguageModelToolInvocationPrepareOptions<IValidateAPI>,
-		_token: vscode.CancellationToken
-	) {
-		const confirmationMessages = {
-			title: 'Validate API',
-			message: new vscode.MarkdownString(
-				`Validate API: ${options.input.url}?`
-			),
-		};
-		return {
-			confirmationMessages,
-			invocationMessage: `Validating API...`,
-		};
-	}
 }
 
 interface ICreateFile {

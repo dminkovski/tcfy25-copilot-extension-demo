@@ -1,0 +1,67 @@
+openapi: 3.0.0
+info:
+  title: Todo API
+  version: 1.0.0
+  description: API for managing todo items
+servers:
+  - url: http://localhost:3000
+paths:
+  /:
+    get:
+      summary: Welcome message
+      responses:
+        '200':
+          description: A welcome message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Welcome to TechConnect FY2025
+  /todos:
+    get:
+      summary: Get all todo items
+      responses:
+        '200':
+          description: A list of todo items
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      example: 1
+                    name:
+                      type: string
+                      example: Fly to Tech Connect.
+    post:
+      summary: Create a new todo item
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: New todo item
+      responses:
+        '201':
+          description: The newly created todo item
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 4
+                  name:
+                    type: string
+                    example: New todo item
