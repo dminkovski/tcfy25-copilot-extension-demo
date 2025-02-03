@@ -6,6 +6,8 @@
     "ghcr.io/devcontainers/features/git:1": {},
     "ghcr.io/devcontainers/features/github-cli:1": {}
   },
+  // Use 'postCreateCommand' to run commands after the container is created.
+  "postCreateCommand": "./.devcontainer/scripts/buildExtensions.sh & ./.devcontainer/scripts/enableApiProposals.sh",
   // Configure tool-specific properties.
   "customizations": {
     "vscode": {
@@ -17,6 +19,7 @@
       ],
       "settings": {
       }
+      
     }
   },
   "containerUser": "root",

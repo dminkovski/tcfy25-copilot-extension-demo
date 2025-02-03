@@ -1,5 +1,6 @@
 {
   "name": "rest-api-copilot",
+  "publisher": "my-workspace",
   "displayName": "[workspace] RESTAPICopilot",
   "description": "Tech Connect FY25 - Demo for GH Copilot Customization in Workspace",
   "version": "0.0.1",
@@ -9,8 +10,9 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": ["onStartupFinished"],
   "main": "./out/extension.js",
+  "enabledApiProposals": ["chatParticipantAdditions"],
   "contributes": {
     "chatParticipants": [
       {

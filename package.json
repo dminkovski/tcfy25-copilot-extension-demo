@@ -1,5 +1,5 @@
 {
-  "name": "REST API with Copilot",
+  "name": "rest-api-with-copilot",
   "version": "1.0.0",
   "description": "REST API",
   "main": "src/server.ts",
