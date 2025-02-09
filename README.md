@@ -7,9 +7,15 @@ Link to Workshop: [WRK731](https://techconnect.microsoft.com/en-US/sessions/WRK7
 
 ## Overview
 The project consists of two parts.
+
+### Example Basic Node & Express Server
 1. In the `src` folder exists a very simple and basic node & express server, as well as an openapi.yaml spec.
-2. This simple app is used to demonstrate the chat participants abilities. 
-3. To run the app server, use `npm install` in the root folder and `npm start` to launch the web server. 
+2. This simple app is used to demonstrate the chat participants abilities on working on some application project. 
+3. To run the demo app server, use `npm install` in the root folder and `npm start` to launch it. You can see the server running - if you open `http:localhost:3000` in your browser. 
+
+### Main Copilot Extension
+1. In the `.vscode\extensions\rest-api-copilot` lives the custom extension that we can install from our local workspace.
+2. In the following, the Readme guides you on how to install and use it.
 
 ## Getting Started
 
