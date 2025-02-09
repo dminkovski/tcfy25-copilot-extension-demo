@@ -1,0 +1,22 @@
+openapi: 3.0.0
+info:
+  title: Todo API
+  version: 1.0.0
+  description: API for managing todo items
+servers:
+  - url: http://localhost:3000
+paths:
+  /:
+    get:
+      summary: Welcome message
+      responses:
+        '200':
+          description: A welcome message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Welcome to TechConnect FY2025

@@ -1,0 +1,30 @@
+{
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "github.copilot.advanced": {
+    // This enables debug-level log output
+    "debug.overrideLogLevels": {
+      "*": "DEBUG"
+    },
+
+    // Allow reporting issue when clicking on the Unhelpful button
+    "debug.reportFeedback": true,
+    "showLog": true // Show the view container with a log of all requests
+  },
+  "files.exclude": {
+    ".vscode/extensions/**/node_modules": true,
+    ".vscode/extensions/**/out": true,
+    ".vscode/extensions/**/dist": true,
+    ".vscode/extensions/**/*.gitignore": true,
+    ".vscode/extensions/**/package-lock.json": true
+  },
+  "json.validate.enable": true,
+  "json.format.enable": true,
+  "window.commandCenter": true,
+  "github.copilot.chat.codeGeneration.instructions": [
+    {
+      "file": "./.copilot/.copilot-instructions.md"
+    }
+  ],
+  "terminal.integrated.shellIntegration.enabled": true,
+  "chat.detectParticipant.enabled": true
+}

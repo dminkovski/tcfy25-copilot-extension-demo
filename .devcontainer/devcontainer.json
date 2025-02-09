@@ -1,0 +1,28 @@
+{
+  "name": "Workspace DevContainer",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:18-bookworm",
+  "features": {
+    "ghcr.io/devcontainers/features/azure-cli:1": {},
+    "ghcr.io/devcontainers/features/git:1": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+  // Use 'postCreateCommand' to run commands after the container is created.
+  "postCreateCommand": "./.devcontainer/scripts/buildExtensions.sh & ./.devcontainer/scripts/enableApiProposals.sh",
+  // Configure tool-specific properties.
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "github.copilot-chat",
+        "github.copilot"
+      ],
+      "settings": {
+      }
+      
+    }
+  },
+  "containerUser": "root",
+  "remoteUser": "root",
+  "forwardPorts": [3000]
+}
