@@ -43,8 +43,10 @@ The project consists of two parts.
 
 > Warning: This is a PoC and Demo that allows Copilot to update and create files as well as run scripts directly on your machine or inside a dev container.
 
-## Examples
+## Example
 Please check [Demo Instructions](./demo/instructions.md)
+
+![Demo GIF](./demo/copilot-demo-video.gif)
 
 ## Contributing
 
